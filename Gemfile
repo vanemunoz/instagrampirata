@@ -47,5 +47,10 @@ group :development do
   gem 'bootstrap-sass'
   gem 'devise'
   gem 'paperclip', '~> 4.2'
-end
+  gem 'sqlite3'
 
+end
+group :production do
+     gem 'pg'
+     gem 'rails_12factor'
+end
