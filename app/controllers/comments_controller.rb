@@ -1,25 +1,31 @@
 class CommentsController < ApplicationController
   before_action :set_post
 
-  def create  
+  def create
     @comment = @post.comments.build(comment_params)
     @comment.user_id = current_user.id
-
+  
     if @comment.save
-      flash[:success] = "¡Has comentado este post!"
-      redirect_to :back
+      respond_to do |format|
+        format.html { redirect_to root_path }
+        format.js
+      end
     else
       flash[:alert] = "Revisa el formulario de comentarios, algo salió mal :/"
       render root_path
     end
   end
 
+
   def destroy  
     @comment = @post.comments.find(params[:id])
-
-    @comment.destroy
-    flash[:success] = "Comentario eliminado :("
-    redirect_to root_path
+    if @comment.user_id == current_user.id
+     @comment.delete
+     respond_to do |format|
+       format.html { redirect_to root_path }
+       format.js
+     end
+    end
   end
 
   private
